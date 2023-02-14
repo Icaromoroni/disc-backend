@@ -42,3 +42,10 @@ def obter_filme(filme_id:int):
     
     raise HTTPException(status_code = status.HTTP_404_NOT_FOUND,
                         detail=f'Não há filme com id ={filme_id}')
+
+@app.post('/filmes', status_code=status.HTTP_201_CREATED)
+def novo_filme(filme: Filme):
+    filme.id = len(filmes)+ 100
+    filmes.append(filme)
+
+    return filme
