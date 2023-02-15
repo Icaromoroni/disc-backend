@@ -49,3 +49,24 @@ def novo_filme(filme: Filme):
     filmes.append(filme)
 
     return filme
+
+@app.delete('/filmes/{filme_id}', status_code=status.HTTP_204_NO_CONTENT)
+def deletar_filme(filme_id: int):
+    for filme_atual in filmes:
+        if filme_atual.id == filme_id:
+            filmes.remove(filme_atual)
+            return {'Deletado'}
+
+    raise HTTPException(status_code = status.HTTP_404_NOT_FOUND,
+                        detail=f'Não há filme com id ={filme_id}')
+
+@app.put('/filmes/{filme_id}')
+def atualizar_filme(filme_id: int, filme: Filme):
+    for index in range(len(filmes)):
+        filme_atual = filmes[index]
+        if filme_atual.id == filme_id:
+            filme.id = filme_atual.id
+            filmes[index] = filme
+            return filme
+
+    raise HTTPException(404,detail = "Filme não encontrado")
