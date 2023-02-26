@@ -16,6 +16,9 @@ s= ['NOVA', 'EM ANDAMENTO', 'PENDENTE', 'RESOVIDA', 'CANCELADA']
 nivel = [1,3,5,8]
 prioridade = [1,2,3]
 
+
+proximo_id = 1
+
 def formatação(task: Task):
     s = task.situacao.upper()
     return s
@@ -24,10 +27,13 @@ def formatação(task: Task):
 
 @app.post('/tarefa', status_code=status.HTTP_201_CREATED)
 def adicionar_tarefa(task: Task):
-    task.id = len(tasks) + 1
+    global proximo_id
+    task.id = proximo_id
     task.situacao = s[0]
     tasks.append(task)
-    return task
+    proximo_id += 1
+    
+    return {"status": "success", "data": task}
 
 @app.get('/tarefa')
 def listar_tarefa(skip: int | None = None, take: int | None = None):
@@ -36,28 +42,31 @@ def listar_tarefa(skip: int | None = None, take: int | None = None):
         fim = skip + take
     else:
         fim = None
-    return tasks[inicio:fim]
+    return {"status": "success", "data": tasks[inicio:fim]}
 
 @app.get('/tarefa/{task_id}')
 def detalhes_tarefa(task_id: int):
     for task in tasks:
         if task.id == task_id:
-            return task
+            return {"status": "success", "data": task}
     
     raise HTTPException(404, detail='Tarefa não exite.')
 
 
-'''@app.get('/tarefa/')
-def buscarSituação(situacao):
-    if situacao:
-        for procurar_situacao in tasks:
-            print(procurar_situacao)
-            if procurar_situacao.situacao == situacao:
-                procurar_situacao += procurar_situacao
-                return procurar_situacao
-
-    pass'''
-
+@app.get('/tarefa/')
+def buscarSituação(situacao: str):
+    formatacao = situacao.upper()
+    lista = []
+    for tarefa in tasks:
+        if tarefa.situacao == formatacao:
+            lista.append(tarefa)
+    if not lista:
+        raise HTTPException(status_code=404, detail=f'Não existem tarefas com a situação {formatacao}')
+    return {"status": "success", "data": lista}
+            
+            
+        
+    
 
 #alterar qualquer item da tarefa menos as canceladas
 @app.put('/tarefa/{task_id}')
@@ -81,6 +90,6 @@ def deletar_tarefa(task_id: int):
     for tarefa_atual in tasks:
         if tarefa_atual.id == task_id:
             tasks.remove(tarefa_atual)
-            return Response('Deletado com sucesso')
+            return Response('Sua tarefa foi deletada.')
     raise HTTPException(404, detail='Tarefa não exite.')
 
