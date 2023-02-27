@@ -36,7 +36,7 @@ def adicionar_tarefa(task: Task):
 
     return {"status": "success", "data": task}
 
-# lista todas as tarefas ou pode filtrar passando o id do inicio e fim da busca
+# lista todas as tarefas ou pode filtrar passando o numero do inicio e fim da busca
 @app.get('/tarefa')
 def listar_tarefa(skip: int | None = None, take: int | None = None):
     inicio = skip
@@ -46,7 +46,7 @@ def listar_tarefa(skip: int | None = None, take: int | None = None):
         fim = None
     return {"status": "success", "data": tasks[inicio:fim]}
 
-# detalha a tarefa passando o identificador
+# listar a tarefa passando o identificador
 @app.get('/tarefa/{task_id}')
 def detalhes_tarefa(task_id: int):
     for task in tasks:
@@ -54,7 +54,7 @@ def detalhes_tarefa(task_id: int):
             return {"status": "success", "data": task}
     raise HTTPException(404, detail='Tarefa não exite.')
 
-# buscar tarefas por situação
+# listar tarefas por situação
 @app.get('/tarefa/')
 def buscarSituação(situacao: str):
     formatacao = situacao.upper()
@@ -66,8 +66,27 @@ def buscarSituação(situacao: str):
         raise HTTPException(status_code=404, detail=f'Não existem tarefas com a situação {formatacao}')
     return {"status": "success", "data": lista}
 
+'''#listar por nivel
+@app.get('/tarefa/nivel/')
+def listar_nivel(nivel: int):
+    tarefas_nivel = [tarefa for tarefa in tasks if tarefa.nivel == nivel]
+    pritn(tarefas_nivel)
+    return {"status": "success", "data": tarefas_nivel}
+            
+#listar por prioridade
+@app.get('/tarefa/')
+def listar_prioridade(p):
+    lista = []
+    if p == prioridade:
+        for tarefa in tasks:
+            if tarefa.prioridade == p:
+                lista.append(tarefa)
+        return {"status": "success", "data": lista}        
+    else:
+        raise HTTPException(409, detail='Prioridade inválida.')'''
 
-# marcar situação da tarefa
+
+#  alterar por situação da tarefa
 @app.put('/tarefa/{task_id}/{marcar_situacao}')
 def marcarSituacao(task_id: int, marcar_situacao: str):
     formatacao = marcar_situacao.upper()
