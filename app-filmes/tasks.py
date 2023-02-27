@@ -55,7 +55,7 @@ def detalhes_tarefa(task_id: int):
     raise HTTPException(404, detail='Tarefa não exite.')
 
 # listar tarefas por situação
-@app.get('/tarefa/')
+@app.get('/tarefa/situacao/')
 def buscarSituação(situacao: str):
     formatacao = situacao.upper()
     lista = []
@@ -66,24 +66,23 @@ def buscarSituação(situacao: str):
         raise HTTPException(status_code=404, detail=f'Não existem tarefas com a situação {formatacao}')
     return {"status": "success", "data": lista}
 
-'''#listar por nivel
+#listar por nivel
 @app.get('/tarefa/nivel/')
 def listar_nivel(nivel: int):
     tarefas_nivel = [tarefa for tarefa in tasks if tarefa.nivel == nivel]
-    pritn(tarefas_nivel)
     return {"status": "success", "data": tarefas_nivel}
             
 #listar por prioridade
-@app.get('/tarefa/')
+@app.get('/tarefa/prioridade/')
 def listar_prioridade(p):
     lista = []
-    if p == prioridade:
+    if p in prioridade:
         for tarefa in tasks:
             if tarefa.prioridade == p:
                 lista.append(tarefa)
         return {"status": "success", "data": lista}        
     else:
-        raise HTTPException(409, detail='Prioridade inválida.')'''
+        raise HTTPException(409, detail='Prioridade inválida.')
 
 
 #  alterar por situação da tarefa
