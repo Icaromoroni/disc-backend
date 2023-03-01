@@ -20,7 +20,7 @@ prioridade = [1,2,3]
 proximo_id = 1
 
 # funcao para formatar a situacao de uma tarefa para letras maiusculas
-def formatação(task: Task):
+def formatacao(task: Task):
     s = task.situacao.upper()
     return s
 
@@ -130,18 +130,32 @@ def marcarSituacao(task_id: int, marcar_situacao: str):
 # alterar qualquer tarefa da tarefa menos as canceladas
 @app.put('/tarefa/{task_id}')
 def alterar_tarefa(task_id: int, task: Task):
-    if task_id > 0 or task_id == None:
+    conf_id = task_id > 0 or task_id == None
+    formatar_situacao = formatacao(task)
+    conf_situacao = formatar_situacao in situacao_tarefa
+    conf_nivel = task.nivel in nivel
+    conf_prioridade = task.prioridade in prioridade
+    if conf_id:
         task.id = task_id
-        for tarefa in tasks:
-            if tarefa.id == task_id:
-                if tarefa.situacao != situacao_tarefa[4]:
-                    task.situacao = formatação(task)
-                    tasks[task_id - 1] = task
-                    return Response('Sua alterção foi realizada.')
+        for elemento in tasks:
+            if elemento.id == task.id:
+                if conf_situacao and conf_nivel and conf_prioridade:
+                    print(elemento)
+                    if elemento.situacao == situacao_tarefa[0]:
+                        task.situacao = formatar_situacao
+                        if task.situacao != situacao_tarefa[3] and task.situacao != situacao_tarefa[0]:
+                            raise HTTPException(409, detail=f'Situação {task.situacao} passou.')
+                    else:
+                        raise HTTPException(409, detail=f'Situação {elemento.situacao} não pode ser alterada.')
                 else:
-                    raise HTTPException(409, detail= 'Você não pode alterar uma tarefa cancelada.')
+                    raise HTTPException(409, detail=f'Observe se a situacao, nível e prioridade de sua tarefa são válidos.')
     else:
-        raise HTTPException(409, detail= 'Identificador invalido')
+        raise HTTPException(409, detail='ID invalido.')
+
+
+
+
+    
 
 
 # deletar tarefa
