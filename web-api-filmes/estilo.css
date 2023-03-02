@@ -2,6 +2,11 @@ body{
     background: lightseagreen;
     font-family: monospace;
 }
+main{
+    border: 1px solid green;
+    border-radius: 1rem;
+    padding: 20;
+}
 
 #form-filme{
     max-width: 20rem;
@@ -10,10 +15,10 @@ body{
     gap: 0.4rem;
 }
 
-#list-filmes{
+#list-filme{
     list-style: none;
 }
 
-#list-film li{
+#list-filme li{
     font-size: 1.3rem;
 }
