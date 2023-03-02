@@ -5,12 +5,13 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-origins = ['http:localhost:5500, http://127.0.0.1:8000']
+origins = ['http://localhost:5500',
+           'http://127.0.0.1:8000']
 app.add_middleware(CORSMiddleware,
-                   allow_origins =origins,
+                   allow_origins=origins,
                    allow_credentials=True,
-                   allow_methods = ['*'],
-                   allow_headers =['*'])
+                   allow_methods=["*"],
+                   allow_headers=["*"])
 
 class Filme(BaseModel):
     id: int | None
@@ -21,14 +22,14 @@ class Filme(BaseModel):
 
 filmes: list[Filme] = []
 
-for i in range(10):
+'''for i in range(10):
     filme = Filme(id=100+i,
                   nome='titanic',
                   genero='Romance',
                   ano=1997,
                   duracao=150
                   )
-    filmes.append(filme)
+    filmes.append(filme)'''
 
 
 @app.get("/filmes")
@@ -53,7 +54,7 @@ def obter_filme(filme_id:int):
 
 @app.post('/filmes', status_code=status.HTTP_201_CREATED)
 def novo_filme(filme: Filme):
-    filme.id = len(filmes)+ 100
+    filme.id = len(filmes) + 1
     filmes.append(filme)
 
     return filme
