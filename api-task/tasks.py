@@ -75,7 +75,6 @@ def detalhes_tarefa(task_id: int):
 def atualizar_situacao_tarefa(task_id: int, situacao: str | None = None, task: Task | None = None):
     if task != None:
         formatacao = task.situacao.upper()
-        print(formatacao)
         for index in range(1,len(tasks)):
             tarefa = tasks[index]
             if tarefa.id == task_id:
