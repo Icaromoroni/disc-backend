@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilo.css">
+    <script src="scripts.js"></script>
+    <title>Pagina Tarefa</title>
+</head>
+<body>
+    <main>
+        <h1>App Tarefa</h1>
+        <h2>Nova Tarefa</h2>
+        <form action="#" method="POST" id="form-tasks">
+            <input type="text" id="descricao" placeholder="Descrição da tarefa">
+            <input type="text" id="responsavel" placeholder="Nome do responsável">
+
+            <span>Nível</span>            
+            <label for="1"><input type="radio" id="nivel-1" name="nivel" value="1"> 1</label>            
+            <label for="3"><input type="radio" id="nivel-3" name="nivel" value="3"> 3</label>            
+            <label for="5"><input type="radio" id="nivel-5" name="nivel" value="5"> 5</label>            
+            <label for="8"><input type="radio" id="nivel-8" name="nivel" value="8"> 8</label>
+
+            <span>Prioridade</span>
+            <label for="1"><input type="radio" id="prioridade-1" name="prioridade" value="1">1</label>            
+            <label for="2"><input type="radio" id="prioridade-2" name="prioridade" value="2">2</label>            
+            <label for="3"><input type="radio" id="prioridade-3" name="prioridade" value="3">3</label>
+
+            <input type="submit" value="Adicionar Tarefa">
+            
+        </form>
+    </main>
+    
+</body>
+</html>
