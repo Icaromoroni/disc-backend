@@ -28,6 +28,15 @@ def adicionar_tarefa(task: Task):
 
     return {"status": "success", "data": task}
 
+# remover tarefa
+@app.delete('/tarefa/{task_id}', status_code=status.HTTP_204_NO_CONTENT)
+def remover_tarefa(task_id: int):
+    for tarefa_atual in tasks:
+        if tarefa_atual.id == task_id:
+            tasks.remove(tarefa_atual)
+            return Response('Sua tarefa foi deletada.')
+    raise HTTPException(404, detail='Tarefa não existe.')
+
 
 # lista todas as tarefas ou pode filtrar passando o numero do inicio e fim da busca
 @app.get('/tarefa')
@@ -41,7 +50,7 @@ def listar_tarefa(skip: int | None = None, take: int | None = None, situacao: st
     filtro_tarefas = tasks
 
     if situacao:
-        filtro_tarefas = [task for task in filtro_tarefas if task.situacao == situacao]
+        filtro_tarefas = [task for task in filtro_tarefas if task.situacao == situacao.upper()]
 
     if nivel:
         filtro_tarefas = [task for task in filtro_tarefas if task.nivel == nivel]
@@ -61,26 +70,39 @@ def detalhes_tarefa(task_id: int):
     raise HTTPException(404, detail='Tarefa não existe.')
 
 
-# deletar tarefa
-@app.delete('/tarefa/{task_id}', status_code=status.HTTP_204_NO_CONTENT)
-def deletar_tarefa(task_id: int):
-    for tarefa_atual in tasks:
-        if tarefa_atual.id == task_id:
-            tasks.remove(tarefa_atual)
-            return Response('Sua tarefa foi deletada.')
-    raise HTTPException(404, detail='Tarefa não existe.')
-
-
 # atualizar o status da tarefa
 @app.put('/tarefa/{task_id}')
-def atualizar_situacao_tarefa(task_id: int, situacao: str):
-    for task in tasks:
-        if task.id == task_id:
-            index = situacao_tarefa.index(situacao.upper())
-            if index < situacao_tarefa.index(task.situacao):
-                raise HTTPException(400, detail='Não é possível atualizar para um status anterior.')
+def atualizar_situacao_tarefa(task_id: int, situacao: str | None = None, task: Task | None = None):
+    if task != None:
+        formatacao = task.situacao.upper()
+        print(formatacao)
+        for index in range(1,len(tasks)):
+            tarefa = tasks[index]
+            if tarefa.id == task_id:
+                task.id = tarefa.id
+                task.situacao = formatacao
+                if task.situacao in situacao_tarefa:
+                    tasks[index] = task
+                    return task
+                else:
+                    raise HTTPException(400, detail='Situação inválida')
+    else:
+        for task in tasks:
+            if task.id == task_id:
+                index = situacao_tarefa.index(situacao.upper())
 
-            task.situacao = situacao.upper()
-            return {"status": "success", "data": task}
+                if situacao_tarefa.index(task.situacao) == 3 or situacao_tarefa.index(task.situacao) == 4:
+                    raise HTTPException(400, detail=f'Não é posível alterar tarefa {task.situacao}')            
+                elif index == 4:
+                    task.situacao = situacao.upper()
+                    return {"status": "success", "data": task}
+                elif index == 1 or index == 2:
+                    task.situacao = situacao.upper()
+                    return {"status": "success", "data": task}
+                elif index == 3 and situacao_tarefa.index(task.situacao) != 2 and situacao_tarefa.index(task.situacao) != 0:
+                    task.situacao = situacao.upper()
+                    return {"status": "success", "data": task}
+                else:
+                    raise HTTPException(400, detail=f'Não é posível pular a tarefa da situação >{task.situacao}< para >{situacao.upper()}<!')
 
-    raise HTTPException(404, detail='Tarefa não existe.')
+        raise HTTPException(404, detail='Tarefa não existe.')
