@@ -8,40 +8,52 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="estilo.css">
     <script src="scripts.js"></script>
-    <title>Pagina Tarefa</title>
+    <title>Página Tarefa</title>
 </head>
 <body>
     <div class="container-fluid">
-        <h1 class="header">Minhas Tarefas</h1>
+        
+        <nav class="navbar navbar-expand-sm navbar-dark header">
+            <div class="container-fluid">
+              <h3>Minhas Tarefas</h3>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+                <form class="d-flex" id="form-pesquisa" method="GET">
+                  <input class="form-control me-2" type="text" placeholder="Procurar tarefa">
+                  <button class="btn btn-primary" type="button">Pesquisar</button>
+                </form>
+            </div>
+        </nav>
         <div class="row">
-            <h2>Nova Tarefa</h2>
-            <form action="#" method="POST" id="form-tasks">
-                <input type="text" id="descricao" placeholder="Descrição da tarefa">
-                <input type="text" id="responsavel" placeholder="Nome do responsável">
-                <div class="dropdown">
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                        Nível
-                    </button>
-                    <ul class="dropdown-menu">
-                    <li><input type="radio" name="nivel" value="1"> <label for="1">1</label></li>
-                    <li><input type="radio" name="nivel" value="3"> <label for="3">3</label></li>
-                    <li><input type="radio" name="nivel" value="5"> <label for="5">5</label></li>
-                    <li><input type="radio" name="nivel" value="8"> <label for="8">8</label></li>
-                    </ul>
-                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
-                        Prioridade
-                    </button>
-                    <ul class="dropdown-menu">
-                    <li><label for="1"><input type="radio" name="prioridade" value="1">1</label></li>
-                    <li><label for="2"><input type="radio" name="prioridade" value="2">2</label></li>
-                    <li><label for="3"><input type="radio" name="prioridade" value="3">3</label></label></li>
-                    </ul>
-                </div>
-                <input type="submit" value="Adicionar Tarefa" class="btn btn-success">                
+            <h2 class="t-nova">Crie sua Tarefa</h2>
+            <form action="#" method="POST" id="form-tarefa">
+                <label for="descricao" id="label">Descrição da tarefa:</label>
+                <input class="form-control" type="text" id="descricao" name="descricao" placeholder="Descrição da tarefa" required>
+                <label for="descricao" id="label">Responsável pela tarefa:</label>
+                <input class="form-control" type="text" id="responsavel" name="responsavel" placeholder="Nome do responsável" required>
+                <label for="nivel" id="label">Escolha o nível:</label>
+                <select class="form-control" id="nivel" name="nivel">
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="5">5</option>
+                    <option value="8">8</option>
+                </select>
+                <label for="prioridade" id="label">Escolha a prioridade:</label>
+                <select class="form-control" id="prioridade" name="prioridade">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <input type="submit" value="Adicionar Tarefa" class="btn btn-success" id="btn-adicionar">                
             </form>
-            <h2>Tarefas Cadastradas</h2>
-            <footer>rodapé</footer>
+            <div class="border-dotted"></div>
+            <h2 class="t-cadastrada">Tarefas Cadastradas</h2>
+            <ul id="lista-tarefa">
+
+            </ul>
         </div>
+        <footer>rodapé</footer>
     </div>
     
 </body>

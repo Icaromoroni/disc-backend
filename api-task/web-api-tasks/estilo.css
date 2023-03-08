@@ -7,7 +7,7 @@
     text-align: center;
     background-color: darkslategrey;
     color: aliceblue;
-    padding: 30px;
+    padding: 10px;
     margin: 0%;
 }
 .row{
@@ -16,14 +16,35 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
-#form-tasks{
+.border-dotted{
+    margin-top: 2rem;
+    border-top: 1px dotted black;
+}
+
+.t-cadastrada{
+    
+    margin-top: 2rem;
+}
+
+#form-tarefa{
     align-items: center;
     max-width: 20rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 1rem;
+}
+.dropdown-menu{
+    text-align: center;
+}
+
+#label{
+    text-align: left;
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
 }
 
 footer{
